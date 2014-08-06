@@ -1,4 +1,12 @@
-/* By VVayne Shu */
+/* By VVayne Shu
+
+Sorting algorithms in C.   
+Sorts up to the first 100 numbers of an input. Currently supports insert and merge sort.
+
+To-Do: 
+Heap Sort, Selection Sort, Bubble Sort
+Add time measures to each sorting algorithm to compare quickness. 
+Explore different methods of implementing each sort. */
 
 /*------includes---------*/
 #include <stdlib.h> 
@@ -9,6 +17,7 @@
 
 /*-------Algorithms-------*/
 
+void printNumArray(int*, int, int);
 
 void merge(int *arr, int min, int mid, int max){
   int index1,index2;
@@ -23,8 +32,8 @@ void merge(int *arr, int min, int mid, int max){
     arr2[index2] = arr[mid+index2];
   }
 
-  arr1[numIn1+1] = INFINITY;
-  arr2[numIn2+1] = INFINITY;
+  arr1[numIn1] = (int)INFINITY;
+  arr2[numIn2] = (int)INFINITY;
 
   index1 = 0;
   index2 = 0;
@@ -41,9 +50,8 @@ void merge(int *arr, int min, int mid, int max){
 }
 
 void mergeSort(int *arr, int min, int max){
-  printNumArray(arr,max+1);
   if(min < max){
-    int mid = (max - min)/2;
+    int mid = (max + min)/2;
     mergeSort(arr,min,mid);
     mergeSort(arr,mid+1,max);
     merge(arr,min,mid,max);
@@ -72,12 +80,14 @@ int menu(){
   if((choice | 1) == 1) return choice;
   else{ 
     puts("Not an option try again");
+    while(fgetc(stdin) != '\n'); //manual flush of stdin because scanf does not read from stream if
+    //format does not match. Without this, recursion goes forever. 
     return menu();   
   }
 }
 
-void printNumArray(int* arr,int count){
-  for(int i = 0; i < count; i++) printf("%d ",arr[i]);
+void printNumArray(int* arr,int start, int finish){
+  for(int i = start; i <= finish; i++) printf("%d ",arr[i]);
   puts("");
 }
 
@@ -86,19 +96,21 @@ void setArrAndInputFile(char* arg, int* arr,int* count){
   FILE* d;
   d = fopen(arg,"r");
   int arrIndex = 0;
-    while(fscanf(d,"%d",&(arr[arrIndex])) != EOF){                                  //while(!feof(d)) this is not good style because of of feof interacts with FILE*
+    while(fscanf(d,"%d",&(arr[arrIndex])) != EOF){    //while(!feof(d)) this is not good style because of of feof interacts with FILE*
     arrIndex++;
     (*count)++;
+    if(*count > 99) break; 
   }
   fclose(d);
 }
 
 /*--------Main ------*/
 int main( int argc, char*argv[]){
-  int arr[50]; 
+  int arr[100]; 
   int count;
   setArrAndInputFile(argv[1],arr,&count);
-  printNumArray(arr,count);
+  puts("Initial Array: ");
+  printNumArray(arr,0,count-1);
   int choice = menu(); 
   switch(choice){
   case 0:
@@ -110,6 +122,6 @@ int main( int argc, char*argv[]){
   default:
     break;
   }
-  printNumArray(arr,count);
+  printNumArray(arr,0,count-1);
   return 0; 
 }
