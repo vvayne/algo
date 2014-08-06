@@ -1,7 +1,7 @@
 /* By VVayne Shu
 
 Sorting algorithms in C.   
-Sorts up to the first 100 numbers of an input. Currently supports insert and merge sort.
+Sorts up to the first 100 numbers of an input. Currently supports insert and merge sort so far
 
 To-Do: 
 Heap Sort, Selection Sort, Bubble Sort
@@ -26,10 +26,10 @@ void merge(int *arr, int min, int mid, int max){
   int arr1 [numIn1+1]; //Plus 1 to include large number at end of array so we know when array is empty. 
   int arr2 [numIn2+1];
   for(index1 = 0; index1 < numIn1; index1++){
-    arr1[index1] = arr[min+index1-1];
+    arr1[index1] = arr[min+index1];
   }
   for(index2 = 0; index2 <numIn2; index2++){
-    arr2[index2] = arr[mid+index2];
+    arr2[index2] = arr[mid+index2+1];
   }
 
   arr1[numIn1] = (int)INFINITY;
