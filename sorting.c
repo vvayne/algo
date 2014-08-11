@@ -1,13 +1,10 @@
 /* By VVayne Shu
-
 Sorting algorithms in C.   
-Sorts up to the first 100 numbers of an input. Currently supports insert and merge sort so far
-
+Sorts up to the first 100 numbers of an input;
 To-Do: 
 Heap Sort, Bubble Sort
 Add time measures to each sorting algorithm to compare quickness. 
 Explore different methods of implementing each sort. 
-
 */
 
 
@@ -21,6 +18,20 @@ void printNumArray(int*, int, int);
 void swap(int*,int,int);
 
 /*-------Algorithms-------*/
+
+/*Bubble Sort */
+
+void bubbleSort(int *arr,int min, int max){
+  int rightBound = max;
+  while(rightBound > 0){
+    for(int i = min; i < rightBound; i++){
+      if(arr[i] > arr[i+1]){
+        swap(arr,i,i+1);
+      }
+    }
+    rightBound --;
+  }
+}
 
 /*Selection Sort */
 
@@ -136,9 +147,10 @@ void merge(int *arr, int min, int mid, int max){
   puts("Merge: 1");
   puts("Quicksort 2");
   puts("Selection 3");
+  puts("Bubble 4");
   puts("Choose your sorting algorithm:");
   scanf("%d",&choice);
-  if(choice < 4 && choice >= 0) return choice;
+  if(choice < 5 && choice >= 0) return choice;
   else{ 
    puts("Not an option try again");
     while(fgetc(stdin) != '\n'); //manual flush of stdin because scanf does not read from stream if
@@ -187,6 +199,8 @@ void merge(int *arr, int min, int mid, int max){
      quickSort(arr,0,count-1);
      case 3:
      selectionSort(arr,0,count-1);
+     case 4:
+     bubbleSort(arr,0,count-1);
      default:
      break;
     }
