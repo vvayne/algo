@@ -4,7 +4,7 @@ Sorting algorithms in C.
 Sorts up to the first 100 numbers of an input. Currently supports insert and merge sort so far
 
 To-Do: 
-Heap Sort, Selection Sort, Bubble Sort
+Heap Sort, Bubble Sort
 Add time measures to each sorting algorithm to compare quickness. 
 Explore different methods of implementing each sort. 
 
@@ -17,25 +17,36 @@ Explore different methods of implementing each sort.
 #include <math.h>
 #include <time.h>
 
+void printNumArray(int*, int, int);
+void swap(int*,int,int);
+
 /*-------Algorithms-------*/
 
-void printNumArray(int*, int, int);
-void swap(int*, int ,int);
-int partition(int *,int,int);
+/*Selection Sort */
+
+void selectionSort(int *arr, int min, int max){
+  int workingMinIndex;
+  for(int j = min; j <= max ; j++){
+    workingMinIndex = j;
+    for(int i = j+1; i <= max; i ++){
+      if(arr[i] < arr[workingMinIndex]){
+        workingMinIndex = i;
+      } 
+    }
+    if(workingMinIndex != j) swap(arr,workingMinIndex,j);
+  }
+}
+
+/* quickSort */
 
 int choosePivot(int *arr, int min, int max){
  return (min+max)/2;
 }
 
-
-void quickSort(int *arr, int min, int max){
- if(min < max){
-  int p;
-  p = partition(arr,min,max);
-  quickSort(arr,min,p-1);
-  quickSort(arr,p+1,max);
- }
-
+void swap(int *arr, int a, int b){
+ int tempValue = arr[a];
+ arr[a] = arr[b];
+ arr[b] = tempValue;
 }
 
 int partition(int *arr, int min, int max){
@@ -53,11 +64,18 @@ int partition(int *arr, int min, int max){
  return finalIndex;
 } 
 
-void swap(int *arr, int a, int b){
- int tempValue = arr[a];
- arr[a] = arr[b];
- arr[b] = tempValue;
+void quickSort(int *arr, int min, int max){
+ if(min < max){
+  int p;
+  p = partition(arr,min,max);
+  quickSort(arr,min,p-1);
+  quickSort(arr,p+1,max);
+ }
+
 }
+
+/* merge */
+
 
 void merge(int *arr, int min, int mid, int max){
  int index1,index2;
@@ -117,9 +135,10 @@ void merge(int *arr, int min, int mid, int max){
   puts("Insert: 0");
   puts("Merge: 1");
   puts("Quicksort 2");
+  puts("Selection 3");
   puts("Choose your sorting algorithm:");
   scanf("%d",&choice);
-  if(choice < 3 && choice >= 0) return choice;
+  if(choice < 4 && choice >= 0) return choice;
   else{ 
    puts("Not an option try again");
     while(fgetc(stdin) != '\n'); //manual flush of stdin because scanf does not read from stream if
@@ -166,12 +185,12 @@ void merge(int *arr, int min, int mid, int max){
      break;
      case 2:
      quickSort(arr,0,count-1);
+     case 3:
+     selectionSort(arr,0,count-1);
      default:
      break;
     }
-  // end = clock();
-  // speed = (double)((end-start));
-  // printf("Time:%f\n",speed);
+
     printNumArray(arr,0,count-1);
     return 0; 
    }
