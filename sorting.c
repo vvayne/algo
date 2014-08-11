@@ -19,17 +19,20 @@ void swap(int*,int,int);
 
 /*-------Algorithms-------*/
 
-/*Bubble Sort */
+/*Bubble Sort Optimized*/
 
 void bubbleSort(int *arr,int min, int max){
-  int rightBound = max;
-  while(rightBound > 0){
-    for(int i = min; i < rightBound; i++){
+  int rightBound = max-1;
+  int tempBound;
+  while(tempBound != 0){
+    tempBound = 0;
+    for(int i = min; i <= rightBound; i++){
       if(arr[i] > arr[i+1]){
         swap(arr,i,i+1);
+        tempBound = i;
       }
     }
-    rightBound --;
+    rightBound = tempBound;
   }
 }
 
