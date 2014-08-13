@@ -2,7 +2,6 @@
 Sorting algorithms in C.   
 Sorts up to the first 100 numbers of an input;
 To-Do: 
-Heap Sort, Bubble Sort
 Add time measures to each sorting algorithm to compare quickness. 
 Explore different methods of implementing each sort. 
 */
@@ -18,6 +17,47 @@ void printNumArray(int*, int, int);
 void swap(int*,int,int);
 
 /*-------Algorithms-------*/
+
+/*Heap Sort */
+
+void siftDown(int *arr, int root, int end){
+  while(2*root+1 <= end){ //not related to heap key value. about index.
+    int swapper = root;
+    int child = 2*root+1;
+    if(arr[child] > arr[root]){
+      swapper = child; 
+    }
+    if(child+1 <= end && arr[child+1] > arr[swapper]){
+      swapper = child+1;
+    }
+    if(swapper != root) {
+      swap(arr,swapper,root);
+      root = swapper;
+    }
+    else{
+      return;
+    }
+  }
+}
+
+void heapify(int *arr, int end){
+  int start = (end -1)/2;
+  while(start >= 0){
+    siftDown(arr, start, end);
+    start --;
+  }
+} 
+
+void heapSort(int *arr, int count){
+  int end = count -1;
+  heapify(arr,end);
+  int root =  0;
+  while(end > 0){
+    swap(arr,root,end);
+    end = end -1;
+    siftDown(arr,root,end);
+  }
+}
 
 /*Bubble Sort Optimized*/
 
@@ -151,9 +191,10 @@ void merge(int *arr, int min, int mid, int max){
   puts("Quicksort 2");
   puts("Selection 3");
   puts("Bubble 4");
+  puts("Heapsort 5");
   puts("Choose your sorting algorithm:");
   scanf("%d",&choice);
-  if(choice < 5 && choice >= 0) return choice;
+  if(choice < 6 && choice >= 0) return choice;
   else{ 
    puts("Not an option try again");
     while(fgetc(stdin) != '\n'); //manual flush of stdin because scanf does not read from stream if
@@ -204,6 +245,8 @@ void merge(int *arr, int min, int mid, int max){
      selectionSort(arr,0,count-1);
      case 4:
      bubbleSort(arr,0,count-1);
+     case 5:
+     heapSort(arr,count);
      default:
      break;
     }
